@@ -76,10 +76,10 @@ For the numeric features, the distribution and the boxplot was used. For the cat
 
 ![Subcategories](/images/subcategories_barchart.png)
 
-* These two attributes were analyzed deeper: “objectives” and “description”, since one of these features will be the basis of the clustering part in Step 4. The texts were tokenized and stemmed using the Natural Language Toolkit (nltk library) in Python. After removing the stopwords and punctuations, the following plots show the top 25 most popular words in the subcategories ‘Data & Analytics’ and ‘Finance’.  
+* These two attributes were analyzed deeper: “objectives” and “description”, since one of these features will be the basis of the clustering part in Step 4. The texts were tokenized and stemmed using the Natural Language Toolkit (nltk library) in Python. After removing the stopwords and punctuations, the following plots show the top 25 most popular words in the subcategories ‘Data & Analytics’.  
 
 ![Wordcloud data](/images/wordcloud_data.png) 
-![Wordcloud finance](/images/wordcloud_finance.png) 
+
 
 **Most important findings on the reviews dataset:**
 * Most users (more than 600.000) gave only one review, but there are couple of user names, who have plenty of reviews: the most common username is David with more than 400 reviews.
