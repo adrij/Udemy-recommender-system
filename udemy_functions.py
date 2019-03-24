@@ -70,14 +70,14 @@ def vocab_stem(text):
         obj_tokenized = tokenize_only(i)
         total_tokenized.extend(obj_tokenized)
     vocab_frame = pd.DataFrame({'words': total_tokenized}, index = total_stemmed)
-    print ('there are ' + str(vocab_frame.shape[0]) + ' items in vocab_frame')
+    #print ('there are ' + str(vocab_frame.shape[0]) + ' items in vocab_frame')
     return vocab_frame 
 
 def drop_words(vocab_frame):
     vocab_frame=vocab_frame.reset_index()
     vocab_frame.columns = ['index','words']
     vocab_frame=vocab_frame.drop_duplicates(subset='index', keep='first').set_index('index')
-    print ('there are ' + str(vocab_frame.shape[0]) + ' items in vocab_frame')
+    #print ('there are ' + str(vocab_frame.shape[0]) + ' items in vocab_frame')
     return vocab_frame
 
 def get_words_count(text, StopWords, vocab_frame):
@@ -259,7 +259,6 @@ def recommend_courses(course_id, n_courses, df_courses, df_norm):
     return title, df_sorted.iloc[1:n_courses][['published_title', 'cosine_similarity']]
 
 def recommend_for_user(user_name, n_courses, df_reviews, df_courses, df_norm):
-    n_courses=n_courses+1
     list_courses=df_reviews[df_reviews['user_name']==user_name]['course_id'].values
     len_courses=len(list_courses)
     index_courses=df_courses[df_courses['id'].isin(list_courses)].index
@@ -270,6 +269,7 @@ def recommend_for_user(user_name, n_courses, df_reviews, df_courses, df_norm):
         print(df_recommend)
         print()
     if len_courses>1:
+        n_courses=n_courses+1
         df_temp=df_courses.copy()
         for i, course_id in enumerate(list_courses):
             id_=df_courses[df_courses['id']==course_id].index.values

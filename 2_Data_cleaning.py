@@ -75,7 +75,7 @@ df.drop(columns=['published_time','rating_distribution','status_label', 'is_publ
 
 
 # 4. keep the relevant columns
-cols=['avg_rating', 'avg_rating_recent', 'content_info', 'description_text', 'has_certificate',  'is_paid',
+cols=['avg_rating', 'avg_rating_recent', 'description_text', 'has_certificate',  'is_paid',
       'id', 'instructional_level', 'is_enrollable_on_mobile', 'is_owned_by_instructor_team', 'is_practice_test_course', 
       'num_article_assets' , 'num_curriculum_items','num_lectures', 'num_practice_tests', 'num_quizzes',
       'num_subscribers', 'num_reviews', 'objectives', 'price','published_title', 'relevancy_score','rating_1', 

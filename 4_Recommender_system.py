@@ -1,31 +1,32 @@
 
-import udemy_functions # all functions to build the clusters and the recomender systems
+#commands to execute. e.g. python 4_Recommender_system.py -c 762616
+#commands to execute. e.g. python 4_Recommender_system.py -u 'Srinivas'
 
+import udemy_functions # all functions to build the clusters and the recomender systems
+import scipy.stats as st 
 import pandas as pd
 import numpy as np
 import ast
 import scipy.stats as st
 import seaborn as sns
 import matplotlib.pyplot as plt
-import matplotlib
-import squarify
 import warnings
 warnings.filterwarnings("ignore")
-import nltk
-from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from string import punctuation
-from collections import defaultdict
-from operator import itemgetter
-from nltk.stem import SnowballStemmer
-from collections import Counter
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.cluster import KMeans
-from scipy.spatial.distance import pdist
 from scipy.cluster.hierarchy import dendrogram, linkage, fcluster
-from sklearn.decomposition import PCA
-from sklearn.metrics.pairwise import cosine_similarity
-from sklearn.metrics import euclidean_distances
+import pickle
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument('foo', type=udemy_functions.recommend_for_user)
+parser = argparse.ArgumentParser(description='Recommender syste mfor users or courses')
+parser.add_argument('-c', '--course_id', help='ID of the taken courses',  type=int)
+parser.add_argument('-u', '--user_name', help='Name of the user to recommend new courses')
+args = vars(parser.parse_args())
+#action='store_const',
 
 #import data
 df_courses=pd.read_csv('data/cleaned/df_courses.csv', index_col=0, sep=' ', converters={"objectives": ast.literal_eval})
@@ -44,9 +45,8 @@ X_descr=vectorizer_descr.fit_transform(df_courses['description_text'])
 word_features_descr = vectorizer_descr.get_feature_names()
 
 #clustering algorithm
-kmeans_descr = KMeans(n_clusters = 8, n_init = 10, n_jobs = -1, random_state=123456)
-kmeans_descr.fit(X_descr)
-df_courses['cluster_descr']=kmeans_descr.labels_
+model_kmeans=pickle.load(open('kmeans8.sav', 'rb')) 
+df_courses['cluster_descr']=model_kmeans.predict(X_descr)
 
 #preparation for the recommender sytsem
 rel_cols=['avg_rating',  'has_certificate',  'instructional_level', 'num_lectures','num_quizzes',
@@ -61,5 +61,10 @@ df_rel=pd.concat([df_rel,dummies], axis=1)
 df_norm=udemy_functions.normalize_features(df_rel)
 
 #recommender system
-print(udemy_functions.recommend_for_user('DEEPAK IYER', 5, df_reviews, df_courses, df_norm))
-print(udemy_functions.recommend_for_user('Henk Bergsma', 5,df_reviews, df_courses, df_norm))
+
+if args['course_id']!=None:
+	course_id_arg=args['course_id']
+	print(udemy_functions.recommend_courses(args['course_id'], 5, df_courses, df_norm))
+
+if args['user_name']!=None:
+	print(udemy_functions.recommend_for_user(args['user_name'], 5,df_reviews, df_courses, df_norm))
